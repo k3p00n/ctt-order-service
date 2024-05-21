@@ -29,8 +29,8 @@ export class OrderController {
     type: [OrderDto],
   })
   @Get()
-  public getOrders(): OrderDto[] {
-    throw new Error('Not implemented');
+  public async getOrders(): Promise<OrderDto[]> {
+    return this.orderService.getOrders();
   }
 
   @ApiOperation({
@@ -44,8 +44,8 @@ export class OrderController {
     type: OrderDto,
   })
   @Post()
-  public createOrder(@Body() order: InputOrderDto): OrderDto {
-    throw new Error('Not implemented');
+  public async createOrder(@Body() order: InputOrderDto): Promise<OrderDto> {
+    return this.orderService.createOrder(order);
   }
 
   @ApiOperation({
@@ -58,8 +58,8 @@ export class OrderController {
     description: 'OK',
   })
   @Delete()
-  public deleteAllOrders(): void {
-    throw new Error('Not implemented');
+  public async deleteAllOrders(): Promise<void> {
+    this.orderService.deleteAllOrders();
   }
 
   @ApiOperation({
@@ -74,8 +74,10 @@ export class OrderController {
   })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @Get(':orderID')
-  public getOrderById(@Param('orderID') orderID: string): OrderDto {
-    throw new Error('Not implemented');
+  public async getOrderById(
+    @Param('orderID') orderID: string,
+  ): Promise<OrderDto> {
+    return this.orderService.getOrder(orderID);
   }
 
   @ApiOperation({
@@ -91,11 +93,11 @@ export class OrderController {
   })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @Put(':orderID')
-  public updateOrder(
+  public async updateOrder(
     @Param('orderID') orderID: string,
     @Body() order: InputOrderDto,
-  ): OrderDto {
-    throw new Error('Not implemented');
+  ): Promise<OrderDto> {
+    return this.orderService.updateOrder(orderID, order);
   }
 
   @ApiOperation({
@@ -111,11 +113,11 @@ export class OrderController {
   })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @Patch(':orderID')
-  public updateOrderPartial(
+  public async updateOrderPartial(
     @Param('orderID') orderID: string,
     @Body() order: Partial<InputOrderDto>,
-  ): OrderDto {
-    throw new Error('Not implemented');
+  ): Promise<OrderDto> {
+    return this.orderService.updateOrderPartial(orderID, order);
   }
 
   @ApiOperation({
@@ -129,7 +131,7 @@ export class OrderController {
   })
   @ApiResponse({ status: 404, description: 'Order not found' })
   @Delete(':orderID')
-  public deleteOrder(@Param('orderID') orderID: string): void {
-    throw new Error('Not implemented');
+  public async deleteOrder(@Param('orderID') orderID: string): Promise<void> {
+    return this.orderService.deleteOrder(orderID);
   }
 }

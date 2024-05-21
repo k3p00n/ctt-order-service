@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsMongoId } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseOrderDto } from './base-order.dto';
 
@@ -6,18 +6,18 @@ export class InputOrderDto extends BaseOrderDto {
   @ApiProperty({
     description: 'Unique identifier of the person whom the order was sold to',
   })
-  @IsString()
+  @IsMongoId()
   soldToID: string;
 
   @ApiProperty({
     description: 'Unique identifier of the person whom the order is billed to',
   })
-  @IsString()
+  @IsMongoId()
   billToID: string;
 
   @ApiProperty({
     description: 'Unique identifier of the person whom the order is sold to',
   })
-  @IsString()
+  @IsMongoId()
   shipToID: string;
 }

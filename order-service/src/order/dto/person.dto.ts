@@ -1,4 +1,4 @@
-import { IsObject, IsString } from 'class-validator';
+import { IsMongoId, IsObject, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class PersonDto {
@@ -23,7 +23,7 @@ export class PersonDto {
   houseNumber: string;
 
   @ApiProperty({ description: 'Unique MongoDB identifier' })
-  @IsString()
+  @IsMongoId()
   id: string;
 
   @ApiProperty({ description: 'Last Name of the Person' })
