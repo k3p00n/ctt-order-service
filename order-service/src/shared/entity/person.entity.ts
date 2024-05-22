@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Person {
@@ -28,4 +28,7 @@ export class Person {
 
   @Column()
   zip: string;
+
+  @OneToMany(() => Person, (person) => person.id)
+  orders: Person[];
 }

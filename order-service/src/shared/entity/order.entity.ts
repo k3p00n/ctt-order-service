@@ -21,14 +21,14 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   orderID: string;
 
-  @ManyToOne(() => Person, (person) => person.id)
-  soldTo: Person;
+  @ManyToOne(() => Person, (person) => person.id, { nullable: true })
+  soldTo?: Person| null;
 
-  @ManyToOne(() => Person, (person) => person.id)
-  billTo: Person;
+  @ManyToOne(() => Person, (person) => person.id, { nullable: true })
+  billTo?: Person| null;
 
-  @ManyToOne(() => Person, (person) => person.id)
-  shipTo: Person;
+  @ManyToOne(() => Person, (person) => person.id, { nullable: true })
+  shipTo?: Person| null;
 }
 
 export class OrderItem {

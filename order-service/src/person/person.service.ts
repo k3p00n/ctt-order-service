@@ -3,15 +3,18 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { firstValueFrom } from 'rxjs';
+import { Order } from 'src/shared/entity/order.entity';
 import { Person } from 'src/shared/entity/person.entity';
 import { NotFoundError } from 'src/shared/error/not-found.error';
-import { Not, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PersonService {
   constructor(
     @InjectRepository(Person)
     private readonly personRepository: Repository<Person>,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
@@ -24,12 +27,7 @@ export class PersonService {
       console.warn(error);
     }
     if (!person) {
-      try {
-        person = await this.getPersonFromRemoteService(id);
-        await this.createPerson(person);
-      } catch (error) {
-        throw error;
-      }
+      person = await this.createPersonById(id);
     }
     return person;
   }
@@ -47,12 +45,24 @@ export class PersonService {
     }
   }
 
-  public async updatePerson(id: string, person: Person): Promise<Person> {
-    await this.personRepository.update({ id }, person);
-    return this.getPersonFromDB(id);
+  public async createPersonById(id: string): Promise<Person> {
+    const person = await this.getPersonFromRemoteService(id);
+    await this.createPerson(person);
+    return person;
+  }
+
+  public async updatePersonById(id: string): Promise<Person> {
+    const person = await this.getPersonFromRemoteService(id);
+    await this.personRepository.save(person);
+    return person;
   }
 
   public async deletePerson(id: string): Promise<void> {
+    await Promise.all([
+      this.orderRepository.update({ soldTo: { id: id } }, { soldTo: null }),
+      this.orderRepository.update({ shipTo: { id: id } }, { shipTo: null }),
+      this.orderRepository.update({ billTo: { id: id } }, { billTo: null }),
+    ]);
     await this.personRepository.delete({ id });
   }
 

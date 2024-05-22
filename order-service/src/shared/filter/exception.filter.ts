@@ -40,6 +40,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
     switch (true) {
       case exception instanceof NotFoundError:
+        return 404;
       case exception instanceof DuplicationError:
         return 400;
       default:

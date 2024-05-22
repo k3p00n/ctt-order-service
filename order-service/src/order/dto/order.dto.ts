@@ -15,7 +15,7 @@ export class OrderDto extends BaseOrderDto {
   })
   @ValidateNested()
   @Type(() => PersonDto)
-  soldTo: PersonDto;
+  soldTo?: PersonDto;
 
   @ApiProperty({
     description: 'Person whom the order will be billed to',
@@ -23,7 +23,7 @@ export class OrderDto extends BaseOrderDto {
   })
   @ValidateNested()
   @Type(() => PersonDto)
-  billTo: PersonDto;
+  billTo?: PersonDto;
 
   @ApiProperty({
     description: 'Person whom the order will be shipped to',
@@ -31,5 +31,5 @@ export class OrderDto extends BaseOrderDto {
   })
   @ValidateNested()
   @Type(() => PersonDto)
-  shipTo: PersonDto;
+  shipTo?: PersonDto;
 }
