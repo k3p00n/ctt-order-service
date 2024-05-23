@@ -31,3 +31,13 @@ The service uses ADRs to document architectural decisions. The ADRs are stored i
 
 Architecture diagram is stored in the `docs/architecture.drawio` file.
 
+## Proposed improvements
+- Add unit tests
+- Add integration tests
+- Add caching
+- Add logging
+- Add health checks
+- Check error handling
+- Add resource based authorization
+- Add rate limiting
+
