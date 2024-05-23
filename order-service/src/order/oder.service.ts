@@ -28,7 +28,9 @@ export class OrderService {
   public async createOrder(inputOrder: InputOrderDto): Promise<OrderDto> {
     await this.checkIfOrderPersonsExist(inputOrder);
 
-    const order = await this.orderRepository.save(this.prepareInputOrder(inputOrder));
+    const order = await this.orderRepository.save(
+      this.prepareInputOrder(inputOrder),
+    );
 
     const topic = this.configService.get<string>(
       'KAFKA_ORDER_EVENTS_CREATED_TOPIC',
@@ -156,16 +158,12 @@ export class OrderService {
       inputOrder.soldToID,
     ];
 
-    try {
-      await Promise.all(
-        [...new Set(personIds)]
-          .filter((id) => id)
-          .map(async (id) => await this.personService.getPerson(id)),
-      );
-      return true;
-    } catch (error) {
-      throw new BadRequestException('Person does not exist');
-    }
+    await Promise.all(
+      [...new Set(personIds)]
+        .filter((id) => id)
+        .map(async (id) => await this.personService.getPerson(id)),
+    );
+    return true;
   }
 
   private prepareInputOrder(inputOrder: Partial<InputOrderDto>): Order {
@@ -174,7 +172,7 @@ export class OrderService {
       shipTo: inputOrder.shipToID,
       billTo: inputOrder.billToID,
       soldTo: inputOrder.soldToID,
-    }
+    };
     Object.keys(order).forEach(
       (key) => inputOrder[key] === undefined && delete inputOrder[key],
     );
