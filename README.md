@@ -20,7 +20,15 @@ The service depends on the contract service and preinstalled Kafka that provides
 
 ## How to run
 To run the service, you need:
-1. to have docker installed on your machine. Then you can run the following command:
+1. Create `external-network` network for the application to communicate with the Kafka service. You can do this by running the following command:
+```bash
+docker-compose -f docker-compose.contract-service up
+```
+this docker-compose is taken from original task and modified to create network only.
+**Be sure that you have contract service source code in the same folder as this project.**
+
+
+2. to have docker installed on your machine. Then you can run the following command:
 
 ```bash
 docker-compose up
